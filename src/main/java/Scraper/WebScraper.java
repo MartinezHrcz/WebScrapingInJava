@@ -7,7 +7,6 @@ import org.jsoup.nodes.*;
 import org.jsoup.select.*;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class WebScraper {
@@ -18,6 +17,7 @@ public class WebScraper {
         // just for ease of use
         url = "https://www.scrapingcourse.com/ecommerce";
         try{
+            //Connecting to the site
             page = Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36")
                     .header("Accept-Language", "*").get();
@@ -29,7 +29,9 @@ public class WebScraper {
     }
 
     private static void GatherData(Document doc) {
+        //Selects elements in css style
         Elements productElements = doc.select("li.product");
+        //Stores the selected elements
         for (Element productElement : productElements) {
             String url = productElement.selectFirst("a").attr("href");
             String productName = productElement.selectFirst("h2").text();
@@ -44,6 +46,7 @@ public class WebScraper {
                     url)
             );
         }
+        //Writes to the cli
         DataWriter.writeDataToCLI(products);
     }
 
