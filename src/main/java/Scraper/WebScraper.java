@@ -1,6 +1,7 @@
 package Scraper;
 //Imports needed for scraping
 import Data.Product;
+import Utils.DataWriter;
 import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
@@ -10,7 +11,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class WebScraper {
-    private static ArrayList<Product> products;
+    private static ArrayList<Product> products = new ArrayList<>();
     private static Document page;
 
     public static void Scrape(String url) {
@@ -38,11 +39,12 @@ public class WebScraper {
             products.add(
                     new Product(
                     productName,
-                    Integer.parseInt(productPrice),
+                    Float.parseFloat(productPrice.substring(1)),
                     img,
                     url)
             );
         }
+        DataWriter.writeDataToCLI(products);
     }
 
 }
