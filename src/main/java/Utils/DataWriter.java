@@ -11,5 +11,6 @@ public class DataWriter {
         products.forEach(product -> {
             System.out.println(product.toString());
         });
+        System.out.println(products.size());
     }
 }

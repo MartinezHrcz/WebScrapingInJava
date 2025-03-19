@@ -12,20 +12,37 @@ import java.util.ArrayList;
 public class WebScraper {
     private static ArrayList<Product> products = new ArrayList<>();
     private static Document page;
+    private static String url = "https://www.scrapingcourse.com/ecommerce";
 
-    public static void Scrape(String url) {
-        // just for ease of use
-        url = "https://www.scrapingcourse.com/ecommerce";
-        try{
-            //Connecting to the site
-            page = Jsoup.connect(url)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36")
-                    .header("Accept-Language", "*").get();
+    public static void Scrape() {
+
+
+        while (url != null) {
+            try{
+                //Connecting to the site
+                page = Jsoup.connect(url)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36")
+                        .header("Accept-Language", "*").get();
+            }
+            catch (IOException e) {
+                System.out.println("Can't scrape " + url);
+            }
+
+            GatherData(page);
+            Element nextButton = page.selectFirst("a.next");
+            if (nextButton != null) {
+                String nextURL = nextButton.attr("href");
+                if (!nextURL.startsWith("http")) {
+                    nextURL = url + nextURL.replace("^/","");
+                }
+                url = nextURL;
+            }
+            else {
+                url = null;
+            }
         }
-        catch (IOException e) {
-            System.out.println("Can't scrape " + url);
-        }
-        GatherData(page);
+
+
     }
 
     private static void GatherData(Document doc) {
@@ -35,7 +52,14 @@ public class WebScraper {
         for (Element productElement : productElements) {
             String url = productElement.selectFirst("a").attr("href");
             String productName = productElement.selectFirst("h2").text();
-            String productPrice = productElement.selectFirst("span").text();
+            String productPrice;
+            if (productElement.selectFirst("span.onsale")!= null) {
+                productPrice = productElement.selectFirst("span.price ins").text();
+            }
+            else{
+                productPrice = productElement.selectFirst("span.price").text();
+            }
+
             String img = productElement.selectFirst("img").attr("src");
 
             products.add(
