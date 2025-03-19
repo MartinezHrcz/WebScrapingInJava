@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class WebScraper {
-    private static ArrayList<Product> products = new ArrayList<>();
+    public static ArrayList<Product> products = new ArrayList<>();
+
     private static Document page;
+
     private static String url = "https://www.scrapingcourse.com/ecommerce";
 
     public static void Scrape() {
@@ -70,8 +72,6 @@ public class WebScraper {
                     url)
             );
         }
-        //Writes to the cli
-        DataWriter.writeDataToCLI(products);
     }
 
 }
