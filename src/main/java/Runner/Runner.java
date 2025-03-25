@@ -1,9 +1,8 @@
 package Runner;
 
 import Scraper.WebScraper;
-import Utils.DataWriter;
 import Utils.MenuCLI;
-import Utils.ProductUtils;
+
 
 public class Runner {
 
