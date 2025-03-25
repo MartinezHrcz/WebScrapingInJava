@@ -2,6 +2,7 @@ package Scraper;
 //Imports needed for scraping
 import Data.Product;
 import Utils.DataWriter;
+import Utils.ProductUtils;
 import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.concurrent.*;
 
 public class WebScraper {
-    public static ArrayList<Product> products = new ArrayList<>();
     private static final int THREAD_POOL_SIZE = 10;
     private static Document page;
 
@@ -113,13 +113,12 @@ public class WebScraper {
 
             String img = productElement.selectFirst("img").attr("src");
 
-            products.add(
+            ProductUtils.AddProduct(
                     new Product(
-                    productName,
-                    Float.parseFloat(productPrice.substring(1)),
-                    img,
-                    url)
-            );
+                            productName,
+                            Float.parseFloat(productPrice.substring(1)),
+                            img,
+                            url));
         }
     }
 
